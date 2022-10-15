@@ -1,5 +1,5 @@
 package com.ashokit.datacollection.service;
 
-public interface ApplicationRegistrationService {
-
+public interface ApplicationService {
+    boolean isApplicationValid(Long appId);
 }

@@ -2,23 +2,27 @@ package com.ashokit.datacollection.restcontroller;
 
 import com.ashokit.datacollection.bean.SaveResponse;
 import com.ashokit.datacollection.entity.CitizenChildren;
-import com.ashokit.datacollection.service.CitizenChildrenService;
+import com.ashokit.datacollection.service.ChildrenService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/citizen/children")
 @AllArgsConstructor
-public class CitizenIncomeController {
+public class ChildrenController {
 
-    final CitizenChildrenService childrenService;
+    final ChildrenService childrenService;
 
-    @PostMapping("/")
+    @PostMapping("")
     ResponseEntity<SaveResponse> saveChildrenDetails(@RequestBody CitizenChildren children) {
-        System.out.println(children);
-        var saveResponse = childrenService.saveChildrenDetail(children);
-        return ResponseEntity.ok(saveResponse);
+        var saveResponse = childrenService.save(children);
+
+        if(saveResponse.getStatus().equals("Success"))
+            return ResponseEntity.status(HttpStatus.CREATED).body(saveResponse);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(saveResponse);
     }
 
     /**
